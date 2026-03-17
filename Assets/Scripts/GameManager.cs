@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject pauseMenuPanel;
     bool isPaused = false;
+    
+    private List<int> seenAnomalies = new List<int>();
     
     void Awake()
     {
@@ -110,7 +113,7 @@ public class GameManager : MonoBehaviour
 
     void TriggerEndScreen()
     {
-        Debug.Log("Escape Triggered!");
+        seenAnomalies.Clear();
         
         // Disble player movement and cursor
         Cursor.lockState = CursorLockMode.None;
@@ -185,23 +188,27 @@ public class GameManager : MonoBehaviour
             if (cc != null) cc.enabled = true; // Re-enable physics
         }
     }
-    private int lastAnomaly = -1;
-    private int secondLastAnomaly = -1;
 
     public int GetRandomAnomaly(int totalAnomalies)
     {
-        int newAnomaly;
-        int safetyNet = 0; // Prevents infinite loops when there's only 1 or 2
+        // If all anomalies have been seen, clear the list
+        if (seenAnomalies.Count >= totalAnomalies)
+        {
+            seenAnomalies.Clear();
+        }
 
+        int newAnomaly;
+        int safetyNet = 0;
+
+        // Keep picking a number until we find one NOT in the list
         do {
             newAnomaly = Random.Range(0, totalAnomalies);
             safetyNet++;
-        } while ((newAnomaly == lastAnomaly || newAnomaly == secondLastAnomaly) && safetyNet < 10);
+        } while (seenAnomalies.Contains(newAnomaly) && safetyNet < 100);
 
-        // Update the history
-        secondLastAnomaly = lastAnomaly;
-        lastAnomaly = newAnomaly;
-
+        // Add the new one to the list so we don't pick it again this run
+        seenAnomalies.Add(newAnomaly);
+    
         return newAnomaly;
     }
     
