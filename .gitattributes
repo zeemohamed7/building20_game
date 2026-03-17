@@ -1,0 +1,4 @@
+* text=auto
+*.unity binary
+*.asset binary
+*.prefab binary

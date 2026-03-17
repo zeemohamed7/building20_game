@@ -1,0 +1,26 @@
+using UnityEngine;
+
+public class RotationAnomaly : MonoBehaviour
+{
+    public Transform hallwayLeg;
+
+    public Vector3 normalRotation = new Vector3(0, 0, 0);
+    
+    public Vector3 anomalyRotation = new Vector3(4f, 0, 0); 
+
+    public void EnableAnomaly()
+    {
+        if (hallwayLeg != null)
+        {
+            hallwayLeg.localEulerAngles = anomalyRotation;
+        }
+    }
+
+    public void DisableAnomaly()
+    {
+        if (hallwayLeg != null)
+        {
+            hallwayLeg.localEulerAngles = normalRotation;
+        }
+    }
+}
