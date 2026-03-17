@@ -90,7 +90,7 @@ public class AnomalyController : MonoBehaviour
             
         }
     }
-    void ResetAllAnomalies()
+    public void ResetAllAnomalies()
     {
         if (clockScript != null) clockScript.DisableAnomaly();
         if (lockerScript != null) lockerScript.DisableAnomaly();

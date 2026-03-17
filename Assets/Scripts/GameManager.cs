@@ -150,25 +150,41 @@ public class GameManager : MonoBehaviour
     
     public void GenerateNewLoop()
     {
-        currentAnomalyIndex = GetRandomAnomaly(16); 
-        anomalyController.ApplyAnomaly(currentAnomalyIndex);
-        
-        // Check due to player clipping through the ground during tilted hallways anomaly
+        int chance = Random.Range(0, 100);
+
+        // If they are on Floor 0, ALWAYS force a normal hallway
+        if (currentFloor == 0)
+        {
+            chance = 100; 
+        }
+
+        // 50/50 Chance Logic
+        if (chance < 50) 
+        {
+            // Anomaly exists
+            currentAnomalyIndex = GetRandomAnomaly(16); 
+            anomalyController.ApplyAnomaly(currentAnomalyIndex);
+        }
+        else 
+        {
+            // Normal Hallway
+            currentAnomalyIndex = 0; // Optional: track that no anomaly is active
+            anomalyController.ResetAllAnomalies(); 
+        }
+
+        // --- TELEPORT LOGIC ---
         if (player != null && startPoint != null)
         {
-            // We get the CharacterController because it usually blocks teleports
             CharacterController cc = player.GetComponent<CharacterController>();
-        
-            if (cc != null) cc.enabled = false; // Turn off physics briefly
+    
+            if (cc != null) cc.enabled = false; // Disable physics to prevent clipping
 
-            // Snap the player to your "Teleport Zone" coordinates
             player.position = startPoint.position;
             player.rotation = startPoint.rotation;
 
-            if (cc != null) cc.enabled = true; // Turn physics back on
+            if (cc != null) cc.enabled = true; // Re-enable physics
         }
     }
-    
     private int lastAnomaly = -1;
     private int secondLastAnomaly = -1;
 
