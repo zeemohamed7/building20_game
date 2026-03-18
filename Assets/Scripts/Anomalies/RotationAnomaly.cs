@@ -6,7 +6,7 @@ public class RotationAnomaly : MonoBehaviour
 
     public Vector3 normalRotation = new Vector3(0, 0, 0);
     
-    public Vector3 anomalyRotation = new Vector3(0, 0, 15f); 
+    public Vector3 anomalyRotation = new Vector3(0, 0, -4f); 
 
     public void EnableAnomaly()
     {
