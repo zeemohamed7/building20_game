@@ -166,19 +166,17 @@ public class GameManager : MonoBehaviour
         // 2. 50/50 Chance for floors 1-8
         int chance = Random.Range(0, 100);
 
-        currentAnomalyIndex = 10; 
-        anomalyController.ApplyAnomaly(currentAnomalyIndex);
-        // if (chance < 50) 
-        // {
-        //     currentAnomalyIndex = GetRandomAnomaly(15); 
-        //     anomalyController.ApplyAnomaly(currentAnomalyIndex);
-        // }
-        // else 
-        // {
-        //     // Normal Hallway
-        //     currentAnomalyIndex = 0;
-        //     anomalyController.ResetAllAnomalies(); 
-        // }
+        if (chance < 50) 
+        {
+            currentAnomalyIndex = GetRandomAnomaly(15); 
+            anomalyController.ApplyAnomaly(currentAnomalyIndex);
+        }
+        else 
+        {
+            // Normal Hallway
+            currentAnomalyIndex = 0;
+            anomalyController.ResetAllAnomalies(); 
+        }
     }
     public int GetRandomAnomaly(int totalAnomalies)
     {
