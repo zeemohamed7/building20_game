@@ -65,8 +65,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Clears the "Selected" state from the button when pausing again
-        EventSystem.current.SetSelectedGameObject(null); 
-        
+        if (EventSystem.current != null) 
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -153,45 +155,22 @@ public class GameManager : MonoBehaviour
     
     public void GenerateNewLoop()
     {
+        // 1. ANOMALY LOGIC
         int chance = Random.Range(0, 100);
+        if (currentFloor == 0) chance = 100; 
 
-        // If they are on Floor 0, ALWAYS force a normal hallway
-        if (currentFloor == 0)
-        {
-            chance = 100; 
-        }
-
-        // 50/50 Chance Logic
         if (chance < 50) 
         {
-            // Anomaly exists
             currentAnomalyIndex = GetRandomAnomaly(16); 
             anomalyController.ApplyAnomaly(currentAnomalyIndex);
         }
         else 
         {
-            // Normal Hallway
-            currentAnomalyIndex = 0; // Optional: track that no anomaly is active
+            currentAnomalyIndex = -1;
             anomalyController.ResetAllAnomalies(); 
         }
 
-        StartCoroutine(SafeTeleport());
-
-        IEnumerator SafeTeleport()
-        {
-            CharacterController cc = player.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
-
-            player.position = startPoint.position;
-            player.rotation = startPoint.rotation;
-
-            // Wait for the physics engine to catch up (one frame)
-            yield return new WaitForFixedUpdate(); 
-
-            if (cc != null) cc.enabled = true;
-        }
     }
-
     public int GetRandomAnomaly(int totalAnomalies)
     {
         // If all anomalies have been seen, clear the list

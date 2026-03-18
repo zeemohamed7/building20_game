@@ -9,7 +9,7 @@ public class NewPlayerTeleporter : MonoBehaviour
     public AnomalyController anomalyController;
     
     private static float lastTeleportTime;
-    private const float TeleportCooldown = 0.1f;
+    private const float TeleportCooldown = 0.5f;
     
     private void OnTriggerEnter(Collider other) // built in method to check if something entered its zone
     {
@@ -29,7 +29,10 @@ public class NewPlayerTeleporter : MonoBehaviour
                 cc.enabled = false; 
     
                 // 3. Apply New Position
-                other.transform.position = TeleportZoneObject.TransformPoint(localOffSet);
+                Vector3 targetPosition = TeleportZoneObject.TransformPoint(localOffSet);
+// Add a tiny bit of "air" (0.05 units) so your feet aren't buried in the tilted floor
+                targetPosition.y += 0.05f; 
+                other.transform.position = targetPosition;
     
                 // 4. Apply New Rotation
                 Quaternion finalRotation = relativeRotation * other.transform.rotation;
