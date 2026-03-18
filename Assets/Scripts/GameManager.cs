@@ -155,21 +155,30 @@ public class GameManager : MonoBehaviour
     
     public void GenerateNewLoop()
     {
-        // 1. ANOMALY LOGIC
+        // FORCE Floor 0 to be normal
+        if (currentFloor == 0)
+        {
+            currentAnomalyIndex = 0;
+            anomalyController.ResetAllAnomalies();
+            return; // Exit early since we know it's safe
+        }
+
+        // 2. 50/50 Chance for floors 1-8
         int chance = Random.Range(0, 100);
-        if (currentFloor == 0) chance = 100; 
 
-        if (chance < 50) 
-        {
-            currentAnomalyIndex = GetRandomAnomaly(16); 
-            anomalyController.ApplyAnomaly(currentAnomalyIndex);
-        }
-        else 
-        {
-            currentAnomalyIndex = -1;
-            anomalyController.ResetAllAnomalies(); 
-        }
-
+        currentAnomalyIndex = 10; 
+        anomalyController.ApplyAnomaly(currentAnomalyIndex);
+        // if (chance < 50) 
+        // {
+        //     currentAnomalyIndex = GetRandomAnomaly(15); 
+        //     anomalyController.ApplyAnomaly(currentAnomalyIndex);
+        // }
+        // else 
+        // {
+        //     // Normal Hallway
+        //     currentAnomalyIndex = 0;
+        //     anomalyController.ResetAllAnomalies(); 
+        // }
     }
     public int GetRandomAnomaly(int totalAnomalies)
     {

@@ -23,7 +23,8 @@ public class AnomalyController : MonoBehaviour
     public ComputerAnomaly computerAnomaly;
     public BarbedWireMan barbedWireMan;
     public void ApplyAnomaly(int currentAnomalyIndex)
-    {
+    {   
+        Debug.Log("ApplyAnomaly");
         ResetAllAnomalies();
         if (currentAnomalyIndex == 0) 
         {
@@ -203,6 +204,7 @@ public class AnomalyController : MonoBehaviour
         if (rotationAnomaly != null)
         {
             rotationAnomaly.EnableAnomaly();
+            Physics.SyncTransforms();
         }
     }
 

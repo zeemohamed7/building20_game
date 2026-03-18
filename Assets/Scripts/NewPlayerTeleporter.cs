@@ -1,51 +1,49 @@
 using UnityEngine;
+
 // credits to: https://www.youtube.com/watch?v=HTXKVkOVpeA
 public class NewPlayerTeleporter : MonoBehaviour
 {
-    public Transform TeleportZoneObject; // holds teleport zone cube
+    public Transform TeleportZoneObject; // holds teleport zone destination (The "Start" of the next hall)
     
     public bool turn180Degrees = false; 
     public bool isForwardTrigger = false;
-    public AnomalyController anomalyController;
     
     private static float lastTeleportTime;
-    private const float TeleportCooldown = 0.5f;
+    private const float TeleportCooldown = 0.75f; // Increased slightly for stability
     
-    private void OnTriggerEnter(Collider other) // built in method to check if something entered its zone
+    private void OnTriggerEnter(Collider other) 
     {
-        if (other.CompareTag("Player") && Time.time > lastTeleportTime + TeleportCooldown) // checking if player collided with this object and cooldown
+        if (other.CompareTag("Player") && Time.time > lastTeleportTime + TeleportCooldown) 
         {
-            GameManager.Instance.ProcessPassage(isForwardTrigger);
-            Debug.Log("Forward trigger: " + isForwardTrigger);
-            
-            Vector3 localOffSet = transform.InverseTransformPoint(other.transform.position); // maintains player "offsetness" when they teleport relative to trigger zone
-            
-            // remember relative position.rotation
-            Quaternion relativeRotation = TeleportZoneObject.rotation * Quaternion.Inverse(transform.rotation); // calculates how player's rotation should change depending on teleport zone orientation
-            CharacterController cc = other.GetComponent<CharacterController>();  // temporarily disables character component of player
+            lastTeleportTime = Time.time;
 
+            // 1. RESET THE WORLD FIRST
+            // This calls ResetAllAnomalies() inside GameManager
+            GameManager.Instance.ProcessPassage(isForwardTrigger);
+        
+            // 2. FORCE PHYSICS TO RE-CALCULATE THE FLAT FLOOR
+            // This ensures the "Tilted" mesh is gone before the player lands
+            Physics.SyncTransforms();
+
+            CharacterController cc = other.GetComponent<CharacterController>();
             if (cc != null)
             {
                 cc.enabled = false; 
-    
-                // 3. Apply New Position
+
+                // 3. NOW TELEPORT THE PLAYER
+                Vector3 localOffSet = transform.InverseTransformPoint(other.transform.position); 
                 Vector3 targetPosition = TeleportZoneObject.TransformPoint(localOffSet);
-// Add a tiny bit of "air" (0.05 units) so your feet aren't buried in the tilted floor
-                targetPosition.y += 0.05f; 
+            
+                // Pop them up to be safe
+                targetPosition.y += 1.1f; 
                 other.transform.position = targetPosition;
-    
-                // 4. Apply New Rotation
-                Quaternion finalRotation = relativeRotation * other.transform.rotation;
-                if (turn180Degrees)
-                {
-                    finalRotation *= Quaternion.Euler(0, 180f, 0);
-                }
-                other.transform.rotation = finalRotation;
-                
-                // This forces Unity to update the position IMMEDIATELY and prevents the "one-frame jitter"
+            
+                // Reset rotation to upright
+                other.transform.rotation = Quaternion.Euler(0, other.transform.rotation.eulerAngles.y, 0);
+
+                // 4. SYNC AGAIN AFTER MOVE
                 Physics.SyncTransforms();
-                
-                cc.enabled = true; 
+                cc.enabled = true;
             }
         }
     }
