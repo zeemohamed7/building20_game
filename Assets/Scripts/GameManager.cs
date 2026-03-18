@@ -175,17 +175,20 @@ public class GameManager : MonoBehaviour
             anomalyController.ResetAllAnomalies(); 
         }
 
-        // --- TELEPORT LOGIC ---
-        if (player != null && startPoint != null)
+        StartCoroutine(SafeTeleport());
+
+        IEnumerator SafeTeleport()
         {
             CharacterController cc = player.GetComponent<CharacterController>();
-    
-            if (cc != null) cc.enabled = false; // Disable physics to prevent clipping
+            if (cc != null) cc.enabled = false;
 
             player.position = startPoint.position;
             player.rotation = startPoint.rotation;
 
-            if (cc != null) cc.enabled = true; // Re-enable physics
+            // Wait for the physics engine to catch up (one frame)
+            yield return new WaitForFixedUpdate(); 
+
+            if (cc != null) cc.enabled = true;
         }
     }
 
