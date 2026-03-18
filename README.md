@@ -1,7 +1,11 @@
 # Building 20: An Exit 8 Clone
+
 A psychological horror "spot-the-difference" game built in Unity. Players must navigate an endless hallway, identifying supernatural anomalies to reach the final exit. If you see an anomaly, turn back. If everything looks normal, keep going.
 
+Check it out [here](https://zeemohamed.itch.io/building-20)!
+
 ## 🕹️ Gameplay Features
+
 Procedural Anomaly System: A pool of 16+ unique anomalies (visual, auditory, and spatial) that trigger randomly.
 
 Intelligent Logic: Built-in "No-Repeat" system ensuring players see a variety of scares without immediate duplicates.
@@ -10,9 +14,10 @@ Seamless Teleportation: Custom physics-handling to maintain player momentum and 
 
 Dynamic UI: Real-time floor tracking and a custom "Fade-to-White" ending sequence.
 
-
 ## 🎨 Credits & Assets
+
 ### 3D Models & Environments
+
 Traffic Cones & Fire Extinguisher: [Void1Gaming](https://sketchfab.com/3d-models/90s-retro-office-pack-dadca97505214b9481d35e22c48e18df)
 
 90s Retro Office Pack: [Sketchfab / MadeByYeshe](https://sketchfab.com/MadeByYeshe)
@@ -36,6 +41,7 @@ Eyes Advanced: [Tanuki Digital](https://assetstore.unity.com/publishers/1864)
 Doors: SL_3DModels
 
 ### Audio & Fonts
+
 Typography: Another Danger by DaFont
 
 Horror Stinger Sounds: [DHSFX](https://assetstore.unity.com/publishers/48474)
@@ -43,4 +49,5 @@ Horror Stinger Sounds: [DHSFX](https://assetstore.unity.com/publishers/48474)
 Footsteps: [Nox_Sound](https://assetstore.unity.com/publishers/52638)
 
 ### Special Thanks
+
 Teleportation Logic based on research by [Luca Unity 3D ](https://www.youtube.com/watch?v=HTXKVkOVpeA&t=714s)
