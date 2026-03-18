@@ -6389,7 +6389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 5
-  mouseSensitivity: 15
+  mouseSensitivity: 10
   playerCamera: {fileID: 1013072228}
   footstepSource: {fileID: 341943260}
   footstepSounds:
